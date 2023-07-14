@@ -1,10 +1,16 @@
 {{ config(
-  materialized='incremental',
-  incremental_strategy='append',
-  partitioned_by=['hour(test_timestamp)'],
-  table_type='iceberg',
-  format='avro',
-) }}
+    materialized='incremental',
+    file_format='hudi',
+    incremental_strategy='append',
+    partitioned_by=['hour(test_timestamp)'],
+    options={
+        'type': 'cow',
+        'primaryKey': 'id',
+        'precombineKey': 'test_timestamp',
+    },
+    unique_key='id'
+   )
+}}
 
 SELECT
     ts AS test_timestamp

@@ -3,10 +3,15 @@
   incremental_strategy='merge',
   partitioned_by=['hour(test_timestamp)'],
   unique_key='test_timestamp',
+  options={
+        'type': 'cow',
+        'primaryKey': 'id',
+        'precombineKey': 'test_timestamp',
+  },
   delete_condition="src.test_rnd = 4 and target.test_timestamp < now() - interval '2' year",
-  table_type='iceberg',
-  format='orc',
+  file_format='hudi'
 ) }}
+
 
 SELECT
     ts AS test_timestamp

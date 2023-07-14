@@ -1,12 +1,13 @@
 {{ config(
-  materialized='table',
-  partitioned_by=['hour(ts)'],
-  table_type='iceberg',
-  table_properties={
-    'vacuum_max_snapshot_age_seconds': '86400',
-    'optimize_rewrite_delete_file_threshold': '2'
-  }
-) }}
+    file_format='hudi',
+    partitioned_by=['hour(ts)'],
+    materialized='table'
+    options={
+        'type': 'cow',
+        'precombineKey': 'ts',
+    },
+   )
+}}
 
 SELECT
   cast(t.ts AS timestamp(6)) AS ts
